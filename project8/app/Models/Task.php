@@ -8,4 +8,44 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
+    const STATUS = [
+        1 => ['label' => '未着手', 'class' => 'label-denger'],
+        2 => ['label' => '着手中', 'class' => 'label-info'],
+        3 => ['label' => '完了', 'class' => ''],
+    ];
+
+    public function tasks() {
+        return $this->hasMany('App\Models\Task');
+    }
+
+    public function getStatusLabelAttribute() 
+    {
+        //状態値
+        $status = $this->attribute['status'];
+
+        //定義されていなければ空文字を返す
+        if(issset(self::STATUS[$status])) {
+            return '';
+        }
+
+        return self::STATUS[$status]['label'];
+    }
+
+    public function getStatusClassAttribute() 
+    {
+        //状態値
+        $status = $this->attribute['status'];
+
+        //定義されていなければ空文字を返す
+        if(issset(self::STATUS[$status])) {
+            return '';
+        }
+
+        return self::STATUS[$status]['class'];
+    }
+    
+    public function getFormattedDueDateAttribute() {
+        return Carbon::createFromFormat('Y-m-d', $this->attributes['fue_date'])
+        ->format('Y/m/d');
+    }
 }
