@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Task extends Model
 {
@@ -14,17 +15,13 @@ class Task extends Model
         3 => ['label' => '完了', 'class' => ''],
     ];
 
-    public function tasks() {
-        return $this->hasMany('App\Models\Task');
-    }
-
     public function getStatusLabelAttribute() 
     {
         //状態値
         $status = $this->attribute['status'];
 
         //定義されていなければ空文字を返す
-        if(issset(self::STATUS[$status])) {
+        if(isset(self::STATUS[$status])) {
             return '';
         }
 
@@ -37,7 +34,7 @@ class Task extends Model
         $status = $this->attribute['status'];
 
         //定義されていなければ空文字を返す
-        if(issset(self::STATUS[$status])) {
+        if(isset(self::STATUS[$status])) {
             return '';
         }
 
