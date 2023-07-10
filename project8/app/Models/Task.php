@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Task extends Model
 {
@@ -15,35 +16,35 @@ class Task extends Model
     ];
 
     public function tasks() {
-        return $this->hasMany('App\Models\Task');
+        return $this->hasMany('app\Models\Task');
     }
 
-    public function getStatusLabelAttribute() 
+    public function getStatusLabelAttribute()
     {
         //状態値
         $status = $this->attribute['status'];
 
         //定義されていなければ空文字を返す
-        if(issset(self::STATUS[$status])) {
+        if(isset(self::STATUS[$status])) {
             return '';
         }
 
         return self::STATUS[$status]['label'];
     }
 
-    public function getStatusClassAttribute() 
+    public function getStatusClassAttribute()
     {
         //状態値
         $status = $this->attribute['status'];
 
         //定義されていなければ空文字を返す
-        if(issset(self::STATUS[$status])) {
+        if(isset(self::STATUS[$status])) {
             return '';
         }
 
         return self::STATUS[$status]['class'];
     }
-    
+
     public function getFormattedDueDateAttribute() {
         return Carbon::createFromFormat('Y-m-d', $this->attributes['fue_date'])
         ->format('Y/m/d');

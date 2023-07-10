@@ -17,7 +17,8 @@ class TaskController extends Controller
         $current_folder = Folder::find($id);
 
         // 選ばれたフォルダに紐づくタスクを取得する
-        $tasks = $current_folder->tasks()->get();
+        // $tasks = $current_folder->tasks()->get();
+        $tasks = Task::where('folder_id', $current_folder->id)->get();
 
         return view('tasks/index', [
             'folders' => $folders,
@@ -45,6 +46,7 @@ class TaskController extends Controller
         $task->due_date = $request->due_date;
 
         $current_folder->tasks()->save($task);
+
 
         return redirect()->route('tasks.index', [
             'id' => $current_folder->id,
