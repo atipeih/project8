@@ -15,9 +15,6 @@ class Task extends Model
         3 => ['label' => '完了', 'class' => ''],
     ];
 
-    public function tasks() {
-        return $this->hasMany('app\Models\Task');
-    }
 
     public function getStatusLabelAttribute()
     {
