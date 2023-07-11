@@ -19,11 +19,11 @@ class Task extends Model
     public function getStatusLabelAttribute()
     {
         //状態値
-        $status = $this->attribute['status'];
+        $status = $this->attributes['status'];
 
         //定義されていなければ空文字を返す
-        if(isset(self::STATUS[$status])) {
-            return '';
+        if(!isset(self::STATUS[$status])) {
+            return ' ';
         }
 
         return self::STATUS[$status]['label'];
@@ -31,11 +31,11 @@ class Task extends Model
 
     public function getStatusClassAttribute()
     {
-        //状態値
-        $status = $this->attribute['status'];
+        // 状態値
+        $status = $this->attributes['status'];
 
-        //定義されていなければ空文字を返す
-        if(isset(self::STATUS[$status])) {
+        // 定義されていなければ空文字を返す
+        if (!isset(self::STATUS[$status])) {
             return '';
         }
 
@@ -43,7 +43,7 @@ class Task extends Model
     }
 
     public function getFormattedDueDateAttribute() {
-        return Carbon::createFromFormat('Y-m-d', $this->attributes['fue_date'])
+        return Carbon::createFromFormat('Y-m-d', $this->attributes['due_date'])
         ->format('Y/m/d');
     }
 }
