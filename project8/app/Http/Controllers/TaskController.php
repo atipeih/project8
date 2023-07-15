@@ -6,13 +6,22 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateTask;
 use App\Http\Requests\EditTask;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     public function index(int $id)
     {
-        // すべてのフォルダを取得する
-        $folders = Folder::all();
+        $current_folder = Folder::find($id);
+
+    if (is_null($current_folder)) {
+        abort(404);
+    }
+    if (Auth::user()->id !== $current_folder->user_id) {
+        abort(403);
+    }
+
+        $folders = Auth::user()->folders()->get();
 
         // 選ばれたフォルダを取得する
         $current_folder = Folder::find($id);
@@ -33,6 +42,12 @@ class TaskController extends Controller
      */
     public function showCreateForm(int $id)
     {
+        $current_folder = Folder::find($id);
+
+        if (is_null($current_folder)) {
+            abort(404);
+        }
+
         return view('tasks/create', [
             'folder_id' => $id
         ]);
@@ -40,6 +55,11 @@ class TaskController extends Controller
 
     public function create(int $id, CreateTask $request)
     {
+        $current_folder = Folder::find($id);
+
+        if (is_null($current_folder)) {
+            abort(404);
+        }
         $current_folder = Folder::find($id);
 
         $task = new Task();
@@ -59,6 +79,9 @@ class TaskController extends Controller
      */
     public function showEditForm(int $id, int $task_id)
     {
+
+        $this->checkRelation($id, $task_id);
+
         $task = Task::find($task_id);
 
         return view('tasks/edit', [
@@ -68,6 +91,9 @@ class TaskController extends Controller
 
     public function edit(int $id, int $task_id, EditTask $request)
     {
+
+        $this->checkRelation($id, $task_id);
+
         // 1
         $task = Task::find($task_id);
 
@@ -81,5 +107,22 @@ class TaskController extends Controller
         return redirect()->route('tasks.index', [
             'id' => $task->folder_id,
         ]);
+    }
+    private function checkRelation(int $id, int $task_id)
+    {
+        $current_folder = Folder::find($id);
+        $task = Task::find($task_id);
+
+        if(is_null($task)) {
+            abort(404);
+        }
+
+        if (is_null($current_folder)) {
+            abort(404);
+        }
+
+        if ($current_folder->id !== $task->folder_id) {
+            abort(404);
+        }
     }
 }

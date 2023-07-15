@@ -1,6 +1,8 @@
 @extends('layout')
 
-@extends('styles')
+@section('styles')
+  @include('share.flatpickr.styles')
+@endsection
 
 @section('content')
   <div class="container">
@@ -55,4 +57,6 @@
   </div>
 @endsection
 
-@extends('scripts')
+@section('scripts')
+  @include('share.flatpickr.scripts')
+@endsection
