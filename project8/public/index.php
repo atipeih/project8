@@ -1,5 +1,13 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+/**
+ * Laravel - A PHP Framework For Web Artisans
+ *
+ * @package  Laravel
+ * @author   Taylor Otwell <taylor@laravel.com> */
+
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
@@ -31,7 +39,7 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 |
 */
 
-require __DIR__.'/../vendor/autoload.php';
+require '/virtual/atipeih/public_html/atipeih.shop/project8/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +52,7 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once '/virtual/atipeih/public_html/atipeih.shop/project8/bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
